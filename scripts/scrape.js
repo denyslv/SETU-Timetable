@@ -250,23 +250,6 @@ async function run() {
   // 5) Loop weeks → select week, select group, parse timetable, save JSON
   for (const w of weeks) {
     // Select week by value → postback
-    const selectedWeek = await page.evaluate((value) => {
-      const sel = document.querySelector("#CboWeeks");
-      if (!sel) return false;
-      sel.value = value;
-      return true;
-    }, w.value);
-    if (selectedWeek) await postback(page, "CboWeeks");
-
-    // Select group by visible text contains → postback
-    const okGroup = await page.evaluate(selectByVisibleText, "#CboStudentGroup", GROUP_TEXT, true);
-    if (okGroup) await postback(page, "CboStudentGroup");
-    else {
-      console.warn("Group not found:", GROUP_TEXT);
-      continue;
-    }
-
-    // Select week by value → postback
     const weekSelected = await page.evaluate((val) => {
       const sel = document.querySelector("#CboWeeks");
       if (!sel) return false;
