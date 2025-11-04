@@ -87,22 +87,6 @@ function readOptions(selector) {
   return Array.from(sel.options).map(o => ({ value: o.value, text: (o.textContent || "").trim() }));
 }
 
-// Parse weeks like: "week 10 (03-NOV-25)" → { value, label, weekStartISO }
-function parseWeeks() {
-  const opts = readOptions("#CboWeeks");
-  const months = { JAN:0,FEB:1,MAR:2,APR:3,MAY:4,JUN:5,JUL:6,AUG:7,SEP:8,OCT:9,NOV:10,DEC:11 };
-  return opts.map(o => {
-    const m = o.text.match(/\((\d{2})-(\w{3})-(\d{2})\)/);
-    let iso = "";
-    if (m) {
-      const [, dd, mon, yy] = m;
-      const d = new Date(2000 + Number(yy), months[mon], Number(dd));
-      iso = d.toISOString().slice(0,10);
-    }
-    return { value: o.value, label: o.text, weekStartISO: iso };
-  }).filter(w => w.weekStartISO);
-}
-
 // Heuristic timetable parser: finds the "big" table with time/subject columns.
 function parseTimetable() {
   const tables = Array.from(document.querySelectorAll("table"));
@@ -215,8 +199,26 @@ async function run() {
   saveJson(path.join(OUT_DIR, "groups.json"), groups);
 
   // 4) Read all weeks and save weeks.json
-  const weeks = await page.evaluate(parseWeeks);
+  const weeks = await page.evaluate(() => {
+    const sel = document.querySelector("#CboWeeks")
+      || document.querySelector("select[id*='CboWeeks']")
+      || document.querySelector("select[name*='CboWeeks']");
+    if (!sel) return [];
+    const months = { JAN:0,FEB:1,MAR:2,APR:3,MAY:4,JUN:5,JUL:6,AUG:7,SEP:8,OCT:9,NOV:10,DEC:11 };
+    return Array.from(sel.options).map(o => {
+      const text = (o.textContent || "").trim();
+      const m = text.match(/\((\d{2})-(\w{3})-(\d{2})\)/);
+      let iso = "";
+      if (m) {
+        const [, dd, mon, yy] = m;
+        const d = new Date(2000 + Number(yy), months[mon], Number(dd));
+        iso = d.toISOString().slice(0,10);
+      }
+      return { value: o.value, label: text, weekStartISO: iso };
+    }).filter(w => w.weekStartISO);
+  });
   saveJson(path.join(OUT_DIR, "weeks.json"), weeks);
+
 
   const scrapedAt = new Date().toISOString();
 
