@@ -194,9 +194,34 @@ async function run() {
   ok = await page.evaluate(selectByVisibleText, "#CboDept", DEPT_TEXT, true);
   if (ok) await postback(page, "CboDept"); else console.warn("Department not found:", DEPT_TEXT);
 
+  await page.waitForFunction(() => {
+    const tables = Array.from(document.querySelectorAll("table"));
+    return tables.some(t => /Time/i.test(t.textContent || ""));
+  }, { timeout: 20000 });
+
+
   // 3) Read groups (after dept is set) and save groups.json
-  const groups = await page.evaluate(readOptions, "#CboStudentGroup");
+  // after selecting School and Department + postbacks
+  await page.waitForFunction(() => {
+    const sel =
+      document.querySelector("#CboStudentGroup") ||
+      document.querySelector("select[id*='CboStudentGroup']") ||
+      document.querySelector("select[name*='CboStudentGroup']");
+    return sel && sel.options && sel.options.length > 1;
+  }, { timeout: 20000 });
+
+  const groups = await page.evaluate(() => {
+    const sel =
+      document.querySelector("#CboStudentGroup") ||
+      document.querySelector("select[id*='CboStudentGroup']") ||
+      document.querySelector("select[name*='CboStudentGroup']");
+    return Array.from(sel.options).map(o => ({
+      value: o.value,
+      text: (o.textContent || "").trim()
+    }));
+  });
   saveJson(path.join(OUT_DIR, "groups.json"), groups);
+
 
   // 4) Read all weeks and save weeks.json
   const weeks = await page.evaluate(() => {
@@ -241,8 +266,40 @@ async function run() {
       continue;
     }
 
+    // Select week by value → postback
+    const weekSelected = await page.evaluate((val) => {
+      const sel = document.querySelector("#CboWeeks");
+      if (!sel) return false;
+      sel.value = val;
+      return true;
+    }, w.value);
+    if (weekSelected) await postback(page, "CboWeeks");
+
+    // Pick the group by visible text (case-insensitive) → postback
+    const pickGroupOk = await page.evaluate((needle) => {
+      const sel = document.querySelector("#CboStudentGroup")
+        || document.querySelector("select[id*='CboStudentGroup']")
+        || document.querySelector("select[name*='CboStudentGroup']");
+      if (!sel) return false;
+      const want = (needle || "").trim().toLowerCase();
+      const opt = Array.from(sel.options).find(o => (o.textContent || "").trim().toLowerCase().includes(want));
+      if (!opt) return false;
+      sel.value = opt.value;
+      return true;
+    }, "KCRCO_B2-W_W");
+
+    if (pickGroupOk) {
+      await postback(page, "CboStudentGroup");
+    } else {
+      console.warn("Group option not found: KCRCO_B2-W_W");
+      continue; // skip this week gracefully
+    }
+
+
     // Parse timetable
     const parsed = await page.evaluate(parseTimetable);
+
+    
 
     if (!parsed.events.length) {
       // Save debug HTML for inspection
