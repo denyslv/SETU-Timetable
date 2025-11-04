@@ -89,76 +89,104 @@ function readOptions(selector) {
 
 // Heuristic timetable parser: finds the "big" table with time/subject columns.
 function parseTimetable() {
-  const tables = Array.from(document.querySelectorAll("table"));
-  const table = tables.find(t => /Subject\s*Code|Subject\s*Code\s*and\s*Title|Time/i.test(t.textContent || "")) || tables[0];
-  if (!table) return { header: [], events: [] };
+  const norm = (s) => (s || "").replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim();
 
-  const rows = Array.from(table.querySelectorAll("tr"))
-    .map(tr => Array.from(tr.children).map(td => td.textContent.replace(/\s+/g, " ").trim()))
-    .filter(r => r.length > 0);
+  // Find headered table
+  const tbl = Array.from(document.querySelectorAll("table")).find(t => {
+    const hdr = t.querySelector("tr");
+    if (!hdr) return false;
+    const cells = Array.from(hdr.children).map(td => norm(td.textContent).toLowerCase());
+    return cells.includes("time") &&
+           cells.some(c => c.includes("subject code")) &&
+           cells.includes("student group") &&
+           cells.includes("type") &&
+           cells.includes("dur") &&
+           cells.some(c => c.includes("lecturer")) &&
+           cells.some(c => c.includes("room"));
+  });
 
-  // Identify header row (first with several columns and containing "Time" or "Subject")
-  const header = rows.find(r => r.length >= 5 && (r.some(c => /time/i.test(c)) || r.some(c => /subject/i.test(c)))) || rows[0];
+  if (!tbl) return { header: [], events: [] };
 
-  const idx = (name) => header.findIndex(h => new RegExp(name, "i").test(h));
+  const rows = Array.from(tbl.querySelectorAll("tr"))
+    .map(tr => Array.from(tr.children).map(td => norm(td.textContent)));
+
+  // Header
+  const header = rows[0] || [];
+  const h = header.map(x => x.toLowerCase());
+
   const col = {
-    time: 0,
-    subject: idx("Subject|Subject Code") !== -1 ? idx("Subject|Subject Code") : -1,
-    title:   idx("Title|Subject Code and Title"),
-    type:    idx("Type"),
-    dur:     idx("^Dur|Duration"),
-    room:    idx("Room\\*?|Room"),
-    lec:     idx("Lectur|Tutor|Teacher")
+    time: h.indexOf("time"),
+    subj: h.findIndex(c => c.includes("subject code")),
+    group: h.indexOf("student group"),
+    type: h.indexOf("type"),
+    dur:  h.indexOf("dur"),
+    lec:  h.findIndex(c => c.includes("lecturer")),
+    room: h.findIndex(c => c.startsWith("room"))
   };
 
   let currentDay = "";
-  const events = [];
+  const toDay = (txt) => {
+    const t = txt.toLowerCase();
+    if (t.includes("monday")) return "Mon";
+    if (t.includes("tuesday")) return "Tue";
+    if (t.includes("wednesday")) return "Wed";
+    if (t.includes("thursday")) return "Thu";
+    if (t.includes("friday")) return "Fri";
+    if (t.includes("saturday")) return "Sat";
+    if (t.includes("sunday")) return "Sun";
+    return "";
+  };
 
-  for (const r of rows) {
-    // One-cell day headers like "Monday", "Tuesday", etc.
-    if (r.length === 1 && /monday|tuesday|wednesday|thursday|friday|saturday|sunday/i.test(r[0])) {
-      currentDay = r[0].slice(0,3); // Mon/Tue/...
+  const out = [];
+
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+
+    // Day separators (single cell)
+    if (r.length === 1) {
+      const day = toDay(r[0]);
+      if (day) currentDay = day;
       continue;
     }
 
-    // Skip header row(s)
-    if (r === header) continue;
+    // Skip rows without time like "09:15"
+    const time = col.time >= 0 ? r[col.time] : "";
+    if (!/^\d{2}:\d{2}$/.test(time)) continue;
 
-    const timeCell = r[col.time] || "";
-    if (!/^\d{2}:\d{2}$/.test(timeCell)) continue;
+    const subj = col.subj >= 0 ? r[col.subj] : "";
+    const groupsRaw = col.group >= 0 ? r[col.group] : "";
+    const type = col.type >= 0 ? r[col.type] : "";
+    const durTxt = col.dur >= 0 ? r[col.dur] : "1";
+    const lecturer = col.lec >= 0 ? r[col.lec] : "";
+    const room = col.room >= 0 ? r[col.room].replace(/\*$/, "") : "";
 
-    // Duration → end time (fallback 60 minutes)
-    let end = "";
-    if (col.dur >= 0 && /^\d+$/.test(r[col.dur])) {
-      end = (function () {
-        const mins = Number(r[col.dur]) * 60;
-        const [hh, mm] = timeCell.split(":").map(Number);
-        const d = new Date(2000, 0, 1, hh, (mm || 0) + mins);
-        return `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
-      })();
-    } else {
-      end = timeCell.replace(/:(\d{2})$/, (_,m)=> m) ? timeCell : timeCell; // guard
-      end = (function () {
-        const [hh, mm] = timeCell.split(":").map(Number);
-        const d = new Date(2000, 0, 1, hh, (mm || 0) + 60);
-        return `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
-      })();
-    }
+    // split subject → code + title
+    let moduleCode = "", title = subj;
+    const m = subj.match(/^([A-Z]{2,}-?\d{3,})\s+(.*)$/i);
+    if (m) { moduleCode = m[1].trim(); title = m[2].trim(); }
 
-    events.push({
-      day: currentDay || "",
-      start: timeCell,
+    const durHours = /^\d+$/.test(durTxt) ? parseInt(durTxt, 10) : 1;
+    const [hh, mm] = time.split(":").map(Number);
+    const endDate = new Date(2000, 0, 1, hh, mm + durHours * 60);
+    const end = `${String(endDate.getHours()).padStart(2,"0")}:${String(endDate.getMinutes()).padStart(2,"0")}`;
+
+    out.push({
+      day: currentDay,
+      start: time,
       end,
-      moduleCode: col.subject >= 0 ? r[col.subject] : "",
-      title:      col.title   >= 0 ? r[col.title]   : "",
-      type:       col.type    >= 0 ? r[col.type]    : "",
-      room:       col.room    >= 0 ? r[col.room].replace(/\*$/, "") : "",
-      lecturer:   col.lec     >= 0 ? r[col.lec]     : ""
+      moduleCode,
+      title,
+      type,
+      durationHours: durHours,
+      lecturer,
+      room,
+      groupsRaw
     });
   }
 
-  return { header, events };
-}
+    return { header, events: out };
+  } 
+
 
 // Trigger ASP.NET WebForms postback and wait for network idle
 async function postback(page, controlId) {
