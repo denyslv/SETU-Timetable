@@ -1,0 +1,11 @@
+{
+  "meta": {
+    "source": "https://studentssp.setu.ie/timetables/StudentGroupTT.aspx",
+    "school": "School of Science and Computing",
+    "department": "Computing and Maths",
+    "group": "KCRCO_B2-W_W",
+    "weekLabel": "week 10 (03-NOV-25)",
+    "weekStartISO": "2025-11-03"
+  },
+  "events": []
+}
