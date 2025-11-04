@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import puppeteer from "puppeteer";
 
-const BASE = "https://YOUR-UNI-DOMAIN/StudentGroupTT.aspx"; // TODO: set full URL
+const BASE = "https://studentssp.setu.ie/timetables/StudentGroupTT.aspx"; // TODO: set full URL
 
 // Fill this with the groups you want:
 const TARGETS = [
