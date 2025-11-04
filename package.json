@@ -1,0 +1,11 @@
+{
+  "name": "setu-timetable",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scrape": "node scripts/scrape.js"
+  },
+  "dependencies": {
+    "puppeteer": "^23.7.0"
+  }
+}
