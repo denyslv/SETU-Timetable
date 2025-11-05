@@ -6,12 +6,12 @@ import path from "path";
 import puppeteer from "puppeteer";
 
 // ───────────────────────────────────────────────────────────────────────────────
-// CONFIG: you can tweak these three strings if your labels differ
+// CONFIG: tweak these if labels differ
 // ───────────────────────────────────────────────────────────────────────────────
 const BASE = "https://studentssp.setu.ie/timetables/StudentGroupTT.aspx";
 const SCHOOL_TEXT = "School of Science and Computing";
 const DEPT_TEXT   = "Computing and Maths";
-const GROUP_TEXT  = "KCRCO_B2-W_W"; // we will match by substring
+const GROUP_TEXT  = "KCRCO_B2-W_W"; // match by substring
 
 // ───────────────────────────────────────────────────────────────────────────────
 // OUTPUT
@@ -31,16 +31,8 @@ function saveJson(filepath, obj) {
 }
 function slug(s) { return (s || "").replace(/[^a-z0-9_]+/gi, "_"); }
 
-// Map "Mon".."Fri" to offset from week start (Monday is 0)
 const dayOffset = { Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6 };
 
-function addMinutes(hhmm, minutes) {
-  const [h, m] = hhmm.split(":").map(Number);
-  const d = new Date(2000, 0, 1, h, (m || 0) + minutes);
-  const hh = String(d.getHours()).padStart(2, "0");
-  const mm = String(d.getMinutes()).padStart(2, "0");
-  return `${hh}:${mm}`;
-}
 function isoOfWeekday(weekStartISO, dayShort) {
   const base = new Date(weekStartISO + "T00:00:00");
   const add = dayOffset[dayShort] ?? 0;
@@ -53,8 +45,7 @@ function isoOfWeekday(weekStartISO, dayShort) {
 // FUNCTIONS that run in the browser context (page.evaluate)
 // ───────────────────────────────────────────────────────────────────────────────
 
-// Select an <option> by visible text (exact or substring), then set value without postback.
-// We'll call __doPostBack separately so we can await network idle reliably.
+// Select an <option> by visible text (substring by default); value is set but no postback here.
 function selectByVisibleText(selector, text, contains = true) {
   const sel =
     document.querySelector(selector) ||
@@ -87,7 +78,7 @@ function readOptions(selector) {
   return Array.from(sel.options).map(o => ({ value: o.value, text: (o.textContent || "").trim() }));
 }
 
-// Heuristic timetable parser: finds the "big" table with time/subject columns.
+// Parse the 7-column timetable table
 function parseTimetable() {
   const norm = (s) => (s || "").replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim();
 
@@ -110,7 +101,6 @@ function parseTimetable() {
   const rows = Array.from(tbl.querySelectorAll("tr"))
     .map(tr => Array.from(tr.children).map(td => norm(td.textContent)));
 
-  // Header
   const header = rows[0] || [];
   const h = header.map(x => x.toLowerCase());
 
@@ -142,14 +132,13 @@ function parseTimetable() {
   for (let i = 1; i < rows.length; i++) {
     const r = rows[i];
 
-    // Day separators (single cell)
+    // Day separator (single cell)
     if (r.length === 1) {
       const day = toDay(r[0]);
       if (day) currentDay = day;
       continue;
     }
 
-    // Skip rows without time like "09:15"
     const time = col.time >= 0 ? r[col.time] : "";
     if (!/^\d{2}:\d{2}$/.test(time)) continue;
 
@@ -160,7 +149,7 @@ function parseTimetable() {
     const lecturer = col.lec >= 0 ? r[col.lec] : "";
     const room = col.room >= 0 ? r[col.room].replace(/\*$/, "") : "";
 
-    // split subject → code + title
+    // Split subject → code + title
     let moduleCode = "", title = subj;
     const m = subj.match(/^([A-Z]{2,}-?\d{3,})\s+(.*)$/i);
     if (m) { moduleCode = m[1].trim(); title = m[2].trim(); }
@@ -184,11 +173,12 @@ function parseTimetable() {
     });
   }
 
-    return { header, events: out };
-  } 
+  return { header, events: out };
+}
 
-
-// Trigger ASP.NET WebForms postback and wait for network idle
+// ───────────────────────────────────────────────────────────────────────────────
+// Postback helper
+// ───────────────────────────────────────────────────────────────────────────────
 async function postback(page, controlId) {
   await page.evaluate((id) => {
     if (typeof window.__doPostBack === "function") {
@@ -198,19 +188,30 @@ async function postback(page, controlId) {
       if (form) form.submit();
     }
   }, controlId);
-  await page.waitForNetworkIdle({ idleTime: 600, timeout: 30000 });
+
+  // WebForms partial postbacks sometimes don't trigger full nav
+  await page.waitForNetworkIdle({ idleTime: 800, timeout: 60000 }).catch(() => {});
+  await page.waitForTimeout(400);
 }
 
 // ───────────────────────────────────────────────────────────────────────────────
 // SCRAPE FLOW
 // ───────────────────────────────────────────────────────────────────────────────
-
 async function run() {
   ensureDir(OUT_DIR);
   ensureDir(DEBUG_DIR);
 
   const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
   const page = await browser.newPage();
+
+  // Make timing more forgiving on CI
+  await page.setUserAgent(
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+    "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+  );
+  page.setDefaultTimeout(60000);
+  page.setDefaultNavigationTimeout(90000);
+
   page.on("console", msg => console.log("[browser]", msg.text()));
   await page.goto(BASE, { waitUntil: "networkidle2" });
 
@@ -222,22 +223,17 @@ async function run() {
   ok = await page.evaluate(selectByVisibleText, "#CboDept", DEPT_TEXT, true);
   if (ok) await postback(page, "CboDept"); else console.warn("Department not found:", DEPT_TEXT);
 
-  await page.waitForFunction(() => {
-    const tables = Array.from(document.querySelectorAll("table"));
-    return tables.some(t => /Time/i.test(t.textContent || ""));
-  }, { timeout: 20000 });
-
-
-  // 3) Read groups (after dept is set) and save groups.json
-  // after selecting School and Department + postbacks
+  // Wait for groups select to populate
   await page.waitForFunction(() => {
     const sel =
       document.querySelector("#CboStudentGroup") ||
       document.querySelector("select[id*='CboStudentGroup']") ||
       document.querySelector("select[name*='CboStudentGroup']");
     return sel && sel.options && sel.options.length > 1;
-  }, { timeout: 20000 });
+  }, { timeout: 60000 });
+  await page.waitForTimeout(400);
 
+  // 3) Read groups and save groups.json
   const groups = await page.evaluate(() => {
     const sel =
       document.querySelector("#CboStudentGroup") ||
@@ -249,7 +245,6 @@ async function run() {
     }));
   });
   saveJson(path.join(OUT_DIR, "groups.json"), groups);
-
 
   // 4) Read all weeks and save weeks.json
   const weeks = await page.evaluate(() => {
@@ -272,11 +267,15 @@ async function run() {
   });
   saveJson(path.join(OUT_DIR, "weeks.json"), weeks);
 
+  console.log("[scrape] weeks:", weeks.length);
+  console.log("[scrape] groups:", groups.length);
 
   const scrapedAt = new Date().toISOString();
 
   // 5) Loop weeks → select week, select group, parse timetable, save JSON
   for (const w of weeks) {
+    console.log("[scrape] processing week:", w.label, w.weekStartISO);
+
     // Select week by value → postback
     const weekSelected = await page.evaluate((val) => {
       const sel = document.querySelector("#CboWeeks");
@@ -297,26 +296,43 @@ async function run() {
       if (!opt) return false;
       sel.value = opt.value;
       return true;
-    }, "KCRCO_B2-W_W");
+    }, GROUP_TEXT);
 
     if (pickGroupOk) {
       await postback(page, "CboStudentGroup");
     } else {
-      console.warn("Group option not found: KCRCO_B2-W_W");
-      continue; // skip this week gracefully
+      console.warn("Group option not found:", GROUP_TEXT);
+      continue;
     }
 
+    // Wait for the actual 7-column timetable header to be present
+    await page.waitForSelector("table", { timeout: 60000 });
+    await page.waitForFunction(() => {
+      const norm = s => (s || "").replace(/\u00a0/g," ").trim().toLowerCase();
+      return Array.from(document.querySelectorAll("table")).some(t => {
+        const tr = t.querySelector("tr");
+        if (!tr) return false;
+        const cells = Array.from(tr.children).map(td => norm(td.textContent));
+        return cells.includes("time")
+            && cells.some(c => c.includes("subject code"))
+            && cells.includes("student group")
+            && cells.includes("type")
+            && cells.includes("dur");
+      });
+    }, { timeout: 60000 });
 
-    // Parse timetable
-    const parsed = await page.evaluate(parseTimetable);
-
-    
+    // Parse timetable (with one retry if empty)
+    let parsed = await page.evaluate(parseTimetable);
+    if (!parsed.events.length) {
+      await postback(page, "CboStudentGroup");
+      await page.waitForTimeout(400);
+      parsed = await page.evaluate(parseTimetable);
+    }
 
     if (!parsed.events.length) {
-      // Save debug HTML for inspection
       const html = await page.content();
-      fs.writeFileSync(path.join(DEBUG_DIR, "last.html"), html);
-      console.warn(`No events parsed for week ${w.label}. Saved debug/last.html`);
+      fs.writeFileSync(path.join(DEBUG_DIR, `last-${w.weekStartISO}.html`), html);
+      console.warn(`No events parsed for week ${w.label}. Saved debug/last-${w.weekStartISO}.html`);
     }
 
     // Attach dates and normalize
@@ -341,7 +357,7 @@ async function run() {
 
     const outDir = path.join(OUT_DIR, w.weekStartISO);
     ensureDir(outDir);
-    const file = path.join(outDir, `${slug(GROUP_TEXT)}.json`);
+    const file = path.join(outDir, "timetable.json"); // standard name
     saveJson(file, payload);
   }
 
@@ -350,7 +366,8 @@ async function run() {
     lastUpdated: scrapedAt,
     timezone: TIMEZONE,
     weeks: weeks.map(({ weekStartISO, label, value }) => ({ weekStartISO, label, value })),
-    groups  // snapshot for UI convenience
+    selectedGroup: GROUP_TEXT,
+    groups
   });
 
   await browser.close();
