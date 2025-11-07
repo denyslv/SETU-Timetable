@@ -122,13 +122,14 @@ Stores room/location information.
 | room_id | INT | PRIMARY KEY, AUTO_INCREMENT | Unique identifier for the room |
 | room_code | VARCHAR(20) | NOT NULL, UNIQUE | Room code (e.g., "IT102", "C26") |
 | room_name | VARCHAR(100) | | Full room name/description |
+| capacity | INT | | Maximum capacity |
 | building | VARCHAR(50) | | Building name |
 | created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Record creation timestamp |
 | updated_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP ON UPDATE | Last update timestamp |
 
 **Sample Data:**
-- room_id: 1, room_code: "IT102", room_name: "IT102"
-- room_id: 2, room_code: "C26", room_name: "C26"
+- room_id: 1, room_code: "IT102", room_name: "IT102", capacity: 30
+- room_id: 2, room_code: "C26", room_name: "C26", capacity: 50
 
 ---
 
