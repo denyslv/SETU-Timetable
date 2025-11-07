@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "source": "https://studentssp.setu.ie/timetables/StudentGroupTT.aspx",
+    "timezone": "Europe/Dublin",
+    "scrapedAt": "2025-11-07T00:00:00Z",
+    "school": "School of Science and Computing",
+    "department": "Computing and Maths",
+    "group": "KCRCO_B2-W_W",
+    "weekLabel": "week 10 (03-NOV-25)",
+    "weekStartISO": "2025-11-03"
+  },
+  "events": [
+    { "day": "Mon", "dateISO": "2025-11-03", "start": "11:15", "end": "12:15", "moduleCode": "COMP-0592", "title": "Digital Audio Production", "type": "P - OnCampus", "durationHours": 1, "lecturer": "Windle, Peter", "room": "IT102", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Mon", "dateISO": "2025-11-03", "start": "12:15", "end": "13:15", "moduleCode": "COMP-0592", "title": "Digital Audio Production", "type": "P - OnCampus", "durationHours": 1, "lecturer": "Windle, Peter", "room": "IT102", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Mon", "dateISO": "2025-11-03", "start": "15:15", "end": "16:15", "moduleCode": "COMP-0593", "title": "Graphic Design 2", "type": "P - OnCampus", "durationHours": 1, "lecturer": "O Neill, Brenda", "room": "IT120", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Mon", "dateISO": "2025-11-03", "start": "16:15", "end": "17:15", "moduleCode": "COMP-0593", "title": "Graphic Design 2", "type": "P - OnCampus", "durationHours": 1, "lecturer": "O Neill, Brenda", "room": "IT120", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+
+    { "day": "Tue", "dateISO": "2025-11-04", "start": "09:15", "end": "10:15", "moduleCode": "COMP-0593", "title": "Graphic Design 2", "type": "P - OnCampus", "durationHours": 1, "lecturer": "O Neill, Brenda", "room": "IT118", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Tue", "dateISO": "2025-11-04", "start": "10:15", "end": "11:15", "moduleCode": "COMP-0185", "title": "Database Fundamentals", "type": "P - OnCampus", "durationHours": 1, "lecturer": "Kealy, Anita", "room": "IT221", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Tue", "dateISO": "2025-11-04", "start": "11:15", "end": "12:15", "moduleCode": "COMP-0185", "title": "Database Fundamentals", "type": "P - OnCampus", "durationHours": 1, "lecturer": "Kealy, Anita", "room": "IT221", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Tue", "dateISO": "2025-11-04", "start": "13:15", "end": "14:15", "moduleCode": "MATH-0029", "title": "Mathematics for Graphics", "type": "L - OnCampus", "durationHours": 1, "lecturer": "Leonard, Francis", "room": "TL159", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Tue", "dateISO": "2025-11-04", "start": "14:15", "end": "15:15", "moduleCode": "MATH-0029", "title": "Mathematics for Graphics", "type": "P - OnCampus", "durationHours": 1, "lecturer": "Leonard, Francis", "room": "IT101", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Tue", "dateISO": "2025-11-04", "start": "16:15", "end": "17:15", "moduleCode": "COMP-0594", "title": "Website Development 2", "type": "L - OnCampus", "durationHours": 1, "lecturer": "O Halloran, Deirdre", "room": "C26", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+
+    { "day": "Wed", "dateISO": "2025-11-05", "start": "10:15", "end": "11:15", "moduleCode": "MATH-0029", "title": "Mathematics for Graphics", "type": "T - OnCampus", "durationHours": 1, "lecturer": "Leonard, Francis", "room": "FTG11", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Wed", "dateISO": "2025-11-05", "start": "11:15", "end": "12:15", "moduleCode": "MATH-0029", "title": "Mathematics for Graphics", "type": "L - OnCampus", "durationHours": 1, "lecturer": "Leonard, Francis", "room": "FTG11", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Wed", "dateISO": "2025-11-05", "start": "13:15", "end": "14:15", "moduleCode": "COMP-0591", "title": "2D Animation", "type": "P - OnCampus", "durationHours": 1, "lecturer": "Mc Inerney, Patrick T.", "room": "IT101", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Wed", "dateISO": "2025-11-05", "start": "14:15", "end": "15:15", "moduleCode": "COMP-0591", "title": "2D Animation", "type": "P - OnCampus", "durationHours": 1, "lecturer": "Mc Inerney, Patrick T.", "room": "IT101", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Wed", "dateISO": "2025-11-05", "start": "15:15", "end": "16:15", "moduleCode": "COMP-0594", "title": "Website Development 2", "type": "P - OnCampus", "durationHours": 1, "lecturer": "O Halloran, Deirdre", "room": "IT220", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Wed", "dateISO": "2025-11-05", "start": "16:15", "end": "17:15", "moduleCode": "COMP-0594", "title": "Website Development 2", "type": "P - OnCampus", "durationHours": 1, "lecturer": "O Halloran, Deirdre", "room": "IT220", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+
+    { "day": "Thu", "dateISO": "2025-11-06", "start": "09:15", "end": "10:15", "moduleCode": "COMP-0185", "title": "Database Fundamentals", "type": "L - OnCampus", "durationHours": 1, "lecturer": "Kealy, Anita", "room": "C26", "groupsRaw": "eauto_b3_W / kcrco_b2-W_W / kcrea_d2-W_W / kinft_d2-W_W" },
+    { "day": "Thu", "dateISO": "2025-11-06", "start": "11:15", "end": "12:15", "moduleCode": "MATH-0029", "title": "Mathematics for Graphics", "type": "L - OnCampus", "durationHours": 1, "lecturer": "Leonard, Francis", "room": "W13", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Thu", "dateISO": "2025-11-06", "start": "13:15", "end": "14:15", "moduleCode": "COMP-0185", "title": "Database Fundamentals", "type": "L - OnCampus", "durationHours": 1, "lecturer": "Kealy, Anita", "room": "F27", "groupsRaw": "eauto_b3_W / kcrco_b2-W_W / kcrea_d2-W_W / kinft_d2-W_W" },
+    { "day": "Thu", "dateISO": "2025-11-06", "start": "14:15", "end": "15:15", "moduleCode": "COMP-0593", "title": "Graphic Design 2", "type": "L - OnCampus", "durationHours": 1, "lecturer": "O Neill, Brenda", "room": "W14", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Thu", "dateISO": "2025-11-06", "start": "15:15", "end": "16:15", "moduleCode": "COMP-0592", "title": "Digital Audio Production", "type": "P - OnCampus", "durationHours": 1, "lecturer": "Windle, Peter", "room": "IT102", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Thu", "dateISO": "2025-11-06", "start": "16:15", "end": "17:15", "moduleCode": "COMP-0592", "title": "Digital Audio Production", "type": "P - OnCampus", "durationHours": 1, "lecturer": "Windle, Peter", "room": "IT102", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+
+    { "day": "Fri", "dateISO": "2025-11-07", "start": "09:15", "end": "10:15", "moduleCode": "COMP-0594", "title": "Website Development 2", "type": "L - OnCampus", "durationHours": 1, "lecturer": "O Halloran, Deirdre", "room": "E04", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Fri", "dateISO": "2025-11-07", "start": "11:15", "end": "12:15", "moduleCode": "COMP-0594", "title": "Website Development 2", "type": "P - OnCampus", "durationHours": 1, "lecturer": "O Halloran, Deirdre", "room": "IT220", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Fri", "dateISO": "2025-11-07", "start": "13:15", "end": "14:15", "moduleCode": "COMP-0185", "title": "Database Fundamentals", "type": "L - OnCampus", "durationHours": 1, "lecturer": "Kealy, Anita", "room": "FTG22", "groupsRaw": "eauto_b3_W / kcrco_b2-W_W / kcrea_d2-W_W / kinft_d2-W_W" },
+    { "day": "Fri", "dateISO": "2025-11-07", "start": "14:15", "end": "15:15", "moduleCode": "COMP-0591", "title": "2D Animation", "type": "P - OnCampus", "durationHours": 1, "lecturer": "Mc Inerney, Patrick T.", "room": "IT101", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" },
+    { "day": "Fri", "dateISO": "2025-11-07", "start": "15:15", "end": "16:15", "moduleCode": "COMP-0591", "title": "2D Animation", "type": "P - OnCampus", "durationHours": 1, "lecturer": "Mc Inerney, Patrick T.", "room": "IT101", "groupsRaw": "kcrco_b2-W_W / kcrea_d2-W_W" }
+  ]
+}

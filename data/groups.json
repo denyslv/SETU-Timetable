@@ -1,1 +1,8 @@
-[]
+{
+  "groups": [
+    { "value": "KCRCO_B2-W_W", "text": "KCRCO_B2-W_W" },
+    { "value": "KCREA_D2-W_W", "text": "KCREA_D2-W_W" },
+    { "value": "EAUTO_B3_W",  "text": "EAUTO_B3_W"  },
+    { "value": "KINFT_D2-W_W","text": "KINFT_D2-W_W"}
+  ]
+}
