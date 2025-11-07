@@ -14,6 +14,8 @@ button { cursor: pointer; }
 .table thead th { background: var(--soft); text-align: left; position: sticky; top: 0; }
 .table tr:nth-child(even) td { background: #fcfcfd; }
 
+.wip {text-align: center;}
+
 @media (max-width: 720px) {
   .table, .table thead, .table tbody, .table th, .table td, .table tr { display: block; }
   .table thead { display: none; }
