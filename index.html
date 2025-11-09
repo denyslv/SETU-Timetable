@@ -3,33 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My Timetable</title>
+  <title>Welcome</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="wrap">
-    <h1>Timetable</h1>
-    <div class="controls">
-      <label>Group
-        <select id="group">
-          <!-- Groups will be loaded dynamically from data/groups.json -->
-        </select>
-      </label>
-      <label>Week
-        <select id="week"></select>
-      </label>
-      <button id="refresh">Refresh</button>
-      <button id="export-ics">Export ICS</button>
-    </div>
+    <h1>Welcome</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="timetable.html">Timetable</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
   </header>
 
   <main class="wrap">
-    <div id="meta" class="muted"></div>
-    <div id="table"></div>
+    <p class="text">Hi, my name is Denys. I'have created this website for my Website Development module. You can find timetable and contact information here.</p>
   </main>
-
-  <!-- Temporary line-->
-  <p class="wip">This Website is a work in progress. Check for updates later...</p>
-  <script src="app.js" type="module"></script>
 </body>
 </html>

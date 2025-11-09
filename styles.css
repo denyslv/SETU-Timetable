@@ -3,10 +3,39 @@
 body { margin: 0; font: 15px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:#0f172a; }
 .wrap { max-width: 960px; margin: 0 auto; padding: 16px; }
 h1 { margin: 0 0 8px; }
-.controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; }
-label { display: grid; gap: 6px; font-weight: 600; }
-select, button { padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: white; }
-button { cursor: pointer; }
+
+/* Navigation styles */
+nav {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+nav ul li {
+  display: inline;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: var(--muted);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+nav ul li a:hover {
+  color: #0f172a;
+}
+
+/* Sets text colour to muted */
 .muted { color: var(--muted); margin: 8px 0 16px; }
 
 .table { width: 100%; border-collapse: collapse; }
@@ -14,12 +43,191 @@ button { cursor: pointer; }
 .table thead th { background: var(--soft); text-align: left; position: sticky; top: 0; }
 .table tr:nth-child(even) td { background: #fcfcfd; }
 
-.wip {text-align: center;}
+.text { text-align: left; font-size: 16px; }
 
+/* Timetable controls */
+.controls {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#searchInput {
+  flex: 1;
+  min-width: 200px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+#addBtn, .delete-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.2s ease;
+}
+
+#addBtn:hover {
+  background: var(--soft);
+}
+
+.delete-btn {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.delete-btn:hover {
+  background: #fecaca;
+}
+
+/* Add form styles */
+.form-container {
+  margin-top: 24px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--soft);
+}
+
+.form-container h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+#newRowForm {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+#newRowForm label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: 500;
+}
+
+#newRowForm input {
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.form-buttons {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.form-buttons button {
+  padding: 8px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.form-buttons button[type="submit"] {
+  background: #dbeafe;
+  border-color: #93c5fd;
+  color: #1e40af;
+}
+
+.form-buttons button[type="submit"]:hover {
+  background: #bfdbfe;
+}
+
+/* Contact page styles */
+#contactLinks {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+#contactLinks img {
+  height: 5rem;
+  width: auto;
+}
+
+.contactItem {
+  text-align: center;
+}
+
+.contactItem img {
+  transition: transform 0.1s ease-in-out;
+}
+
+.contactItem a:hover img {
+  transform: scale(1.1);
+}
+
+.contactItem figcaption {
+  padding-top: 0.5rem;
+  text-align: center;
+  word-break: break-word;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.contactItem a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Education page styles */
+.tableWrapper {
+  margin: 2rem 0;
+}
+
+#logos {
+  display: flex;
+  padding-top: 2rem;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+#logos img {
+  height: 6rem;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+#logos a {
+  text-decoration: none;
+}
+
+/* Sets the table on smaller screens to block */
 @media (max-width: 720px) {
   .table, .table thead, .table tbody, .table th, .table td, .table tr { display: block; }
   .table thead { display: none; }
   .table tr { margin: 0 0 10px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
   .table td { border: 0; border-top: 1px solid var(--line); }
   .table td::before { content: attr(data-label); display: block; font-weight: 700; color: var(--muted); margin-bottom: 4px; }
+  
+  #logos {
+    gap: 1rem;
+  }
+  
+  #logos img {
+    height: 4rem;
+  }
+  
+  #contactLinks img {
+    height: 4rem;
+  }
 }

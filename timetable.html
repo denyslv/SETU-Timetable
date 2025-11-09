@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Timetable</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="wrap">
+    <h1>This is a timetable for the group Creative Computing Year 2</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="timetable.html">Timetable</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div id="meta" class="muted"></div>
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="Search timetable..." />
+      <button id="addBtn">Add New Row</button>
+    </div>
+    <div id="table"></div>
+    <div id="addForm" class="form-container" style="display: none;">
+      <h3>Add New Row</h3>
+      <form id="newRowForm">
+        <label>Day: <input type="text" name="Day" required /></label>
+        <label>Start: <input type="text" name="Start" required /></label>
+        <label>End: <input type="text" name="End" required /></label>
+        <label>Code: <input type="text" name="Code" required /></label>
+        <label>Title: <input type="text" name="Title" required /></label>
+        <label>Type: <input type="text" name="Type" required /></label>
+        <label>Room: <input type="text" name="Room" required /></label>
+        <label>Lecturer: <input type="text" name="Lecturer" required /></label>
+        <div class="form-buttons">
+          <button type="submit">Add</button>
+          <button type="button" id="cancelBtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
