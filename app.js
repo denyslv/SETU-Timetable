@@ -142,7 +142,6 @@ function deleteRow(index) {
 
 // Loads the schedule data and displays it in the table
 function load() {
-  metaEl.textContent = `${scheduleData.metadata.group} · ${scheduleData.metadata.weekLabel}`;
   allRows = toRows(scheduleData);
   currentRows = [...allRows];
   renderTable(headers, currentRows);
