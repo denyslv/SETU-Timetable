@@ -1,4 +1,4 @@
-:root { --line:hsl(39, 42%, 80%); --soft:hsl(39, 42%, 75%); --muted:hsl(280, 45%, 12%); }
+:root { --line:hsl(39, 42%, 80%); --lineDark:hsl(39, 42%, 75%); --soft:hsl(39, 42%, 75%); --muted:hsl(280, 45%, 12%); }
 * { box-sizing: border-box; }
 body { margin: 0; font: 15px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:#130918; background-color: #ece2d0;}
 .wrap { max-width: 960px; margin: 0 auto; padding: 16px; }
@@ -39,9 +39,21 @@ nav ul li a:hover {
 .muted { color: var(--muted); margin: 8px 0 16px; }
 
 .table { width: 100%; border-collapse: collapse; }
-.table th, .table td { border: 1px solid var(--line); padding: 8px 10px; vertical-align: top; }
+.table th, .table td { border: 1px solid var(--line); padding: 8px 10px; vertical-align: top; white-space: nowrap;}
 .table thead th { background: var(--soft); text-align: left; position: sticky; top: 0; }
-.table tr:nth-child(even) td { background: hsl(39, 42%, 80%); }
+.table tr[data-day-start="true"] { border-top: 2px solid var(--soft) }
+.table tr[data-day-index="1"],
+.table tr[data-day-index="3"],
+.table tr[data-day-index="5"] {
+  /* style days with even indexes */
+  background: var(--line);
+}
+.table tr[data-day-index="1"] td,
+.table tr[data-day-index="3"] td,
+.table tr[data-day-index="5"] td {
+  /* style days with even indexes */
+  border-color: hsl(39, 42%, 70%);
+}
 
 .text { text-align: left; font-size: 16px; }
 
@@ -64,7 +76,7 @@ nav ul li a:hover {
 }
 
 #addBtn, .delete-btn {
-  padding: 8px 16px;
+  padding: 5px 16px;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: white;
@@ -211,23 +223,9 @@ nav ul li a:hover {
   text-decoration: none;
 }
 
-/* Sets the table on smaller screens to block */
-@media (max-width: 720px) {
-  .table, .table thead, .table tbody, .table th, .table td, .table tr { display: block; }
-  .table thead { display: none; }
-  .table tr { margin: 0 0 10px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-  .table td { border: 0; border-top: 1px solid var(--line); }
-  .table td::before { content: attr(data-label); display: block; font-weight: 700; color: var(--muted); margin-bottom: 4px; }
-  
-  #logos {
-    gap: 1rem;
-  }
-  
-  #logos img {
-    height: 4rem;
-  }
-  
-  #contactLinks img {
-    height: 4rem;
+@media (max-aspect-ratio: 1/1) {
+  #table {
+  max-height: 30%;
+  overflow-y: auto;
   }
 }

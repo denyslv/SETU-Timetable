@@ -46,7 +46,7 @@ const cancelBtn = document.querySelector("#cancelBtn");
 // Store current rows data
 let currentRows = [];
 let allRows = [];
-const headers = ["Day", "Start", "End", "Code", "Title", "Type", "Room", "Lecturer"];
+const headers = ["Day", "Start", "Room", "Title", "Lecturer", "Type"];
 
 // Creates a table with headers and rows and displays it on the page
 function renderTable(headers, rows) {
@@ -59,10 +59,20 @@ function renderTable(headers, rows) {
   tableHTML += '<th>Actions</th>';
   
   tableHTML += '</tr></thead><tbody>';
+
+  const daysIndex = { Mon:0, Tue:1, Wed:2, Thu:3, Fri:4, Sat:5, Sun:6 };
+  let previousDay = null;
   
   //For each row, add a tr element
   rows.forEach((r, index) => {
-    tableHTML += '<tr data-index="' + index + '">';
+    const dayIn = daysIndex[r.Day];
+    //if today is not equal to yesterday > isNewDay = true
+    const isNewDay = r.Day !== previousDay;
+    previousDay = r.Day;
+    //add dayStart attribute condition
+    const dayStartAttr = isNewDay ? ' data-day-start="true"' : "";
+
+    tableHTML += `<tr data-index="${index}" data-day-index="${dayIn}"${dayStartAttr}>`;
     headers.forEach(h => {
       //get the value of the row for each header
       const value = r[h] || "";
@@ -143,6 +153,7 @@ function deleteRow(index) {
 // Loads the schedule data and displays it in the table
 function load() {
   allRows = toRows(scheduleData);
+  // ... creates a new array currentRows that is a copy of allRows
   currentRows = [...allRows];
   renderTable(headers, currentRows);
 }
