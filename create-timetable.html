@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My Timetable</title>
+  <title>Create a Timetable</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="wrap">
-    <h1>This is a timetable for the group Creative Computing Year 2</h1>
+    <h1>Create Your Own Timetable</h1>
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
@@ -21,10 +21,12 @@
   </header>
 
   <main class="wrap">
+    <div id="meta" class="muted"></div>
     <div class="controls">
       <input type="text" id="searchInput" placeholder="Search timetable..." />
-<!--       <button id="addBtn">Add New Row</button>
- -->    </div>
+      <button id="addBtn">Add New Row</button>
+      <button id="clearBtn" class="clear-btn">Clear All</button>
+    </div>
     <div id="table"></div>
     <div id="addForm" class="form-container" style="display: none;">
       <h3>Add New Row</h3>
@@ -37,9 +39,9 @@
         <label>Type: <input type="text" name="Type" required /></label>
         <label>Room: <input type="text" name="Room" required /></label>
         <label>Lecturer: <input type="text" name="Lecturer" required /></label>
-<!--         <div class="form-buttons">
+        <div class="form-buttons">
           <button type="submit">Add</button>
-          <button type="button" id="cancelBtn">Cancel</button> -->
+          <button type="button" id="cancelBtn">Cancel</button>
         </div>
       </form>
     </div>
@@ -47,7 +49,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.min.js"></script>
   <script src="page-transitions.js"></script>
-  <script src="timetable-handlebars.js"></script>
+  <script src="create-timetable.js"></script>
 </body>
 </html>
 

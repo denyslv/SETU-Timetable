@@ -1,6 +1,35 @@
-:root { --line:hsl(39, 42%, 80%); --soft:hsl(39, 42%, 75%); --muted:hsl(280, 45%, 12%); }
+:root { --line:hsl(39, 42%, 80%); --soft:hsl(39, 42%, 75%); --muted:hsl(280, 45%, 12%); --day-header:hsl(36, 5%, 19%); }
 * { box-sizing: border-box; }
-body { margin: 0; font: 15px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:#130918; background-color: #ece2d0;}
+body { 
+  margin: 0; 
+  font: 15px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; 
+  color:#130918; 
+  background-color: #ece2d0;
+  opacity: 0;
+  animation: fadeIn 0.2s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+body.fade-out {
+  animation: fadeOut 0.2s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 .wrap { max-width: 960px; margin: 0 auto; padding: 16px; }
 h1 { margin: 0 0 8px; }
 
@@ -41,7 +70,9 @@ nav ul li a:hover {
 .table { width: 100%; border-collapse: collapse; }
 .table th, .table td { border: 1px solid var(--line); padding: 8px 10px; vertical-align: top; }
 .table thead th { background: var(--soft); text-align: left; position: sticky; top: 0; }
-.table tr:nth-child(even) td { background: hsl(39, 42%, 80%); }
+.table tr.day-header td { background: var(--day-header) !important; color: white !important; font-weight: bold; padding: 12px; }
+/* Event row colors are handled by JavaScript to reset after each day header */
+
 
 .text { text-align: left; font-size: 16px; }
 
@@ -63,7 +94,7 @@ nav ul li a:hover {
   font-size: 15px;
 }
 
-#addBtn, .delete-btn {
+#addBtn, .delete-btn, .clear-btn {
   padding: 8px 16px;
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -85,6 +116,38 @@ nav ul li a:hover {
 
 .delete-btn:hover {
   background: #fecaca;
+}
+
+.clear-btn {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.clear-btn:hover {
+  background: #fecaca;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }
 
 /* Add form styles */
@@ -166,7 +229,11 @@ nav ul li a:hover {
 }
 
 .contactItem img {
-  transition: transform 0.1s ease-in-out;
+  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+}
+
+.rollover-image {
+  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 .contactItem a:hover img {
@@ -209,6 +276,128 @@ nav ul li a:hover {
 
 #logos a {
   text-decoration: none;
+}
+
+/* Carousel styles */
+.glide {
+  margin: 2rem 0;
+  position: relative;
+}
+
+.glide__arrows {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.glide__arrow {
+  pointer-events: auto;
+}
+
+.carousel-image {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.carousel-image:hover {
+  transform: scale(1.02);
+  opacity: 0.9;
+}
+
+.glide__arrow {
+  background: var(--soft) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+  font-size: 24px !important;
+  color: var(--muted) !important;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  position: relative;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.glide__arrow--left {
+  left: 10px !important;
+  padding-top: 7px !important;
+  padding-right: 11px !important;
+
+}
+
+.glide__arrow--right {
+  right: 10px !important;
+  padding-top: 7px !important;
+  padding-right: 11px !important;
+}
+
+.glide__arrow:hover {
+  background: var(--line);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  opacity: 0.9;
+}
+
+.glide__bullets {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.glide__bullet {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--line);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  position: relative;
+}
+
+.glide__bullet:hover {
+  background: var(--muted);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  opacity: 0.9;
+}
+
+.glide__bullet--active {
+  background: var(--muted);
+}
+
+/* Image replacement functionality */
+.image-replace-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 2rem;
+}
+
+.replaceable-image {
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  border-radius: 8px;
+}
+
+.replaceable-image:hover {
+  transform: scale(1.05);
+  opacity: 0.8;
 }
 
 /* Sets the table on smaller screens to block */

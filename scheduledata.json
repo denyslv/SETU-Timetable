@@ -1,0 +1,36 @@
+{
+  "metadata": {
+    "group": "KCRCO_B2-W_W",
+    "weekLabel": "week 10 (03-NOV-25)"
+  },
+  "events": [
+    { "day": "Mon", "start": "11:15", "end": "12:15", "moduleCode": "COMP-0592", "title": "Digital Audio Production", "type": "P - OnCampus", "room": "IT102", "lecturer": "Windle, Peter" },
+    { "day": "Mon", "start": "12:15", "end": "13:15", "moduleCode": "COMP-0592", "title": "Digital Audio Production", "type": "P - OnCampus", "room": "IT102", "lecturer": "Windle, Peter" },
+    { "day": "Mon", "start": "15:15", "end": "16:15", "moduleCode": "COMP-0593", "title": "Graphic Design 2", "type": "P - OnCampus", "room": "IT120", "lecturer": "O Neill, Brenda" },
+    { "day": "Mon", "start": "16:15", "end": "17:15", "moduleCode": "COMP-0593", "title": "Graphic Design 2", "type": "P - OnCampus", "room": "IT120", "lecturer": "O Neill, Brenda" },
+    { "day": "Tue", "start": "09:15", "end": "10:15", "moduleCode": "COMP-0593", "title": "Graphic Design 2", "type": "P - OnCampus", "room": "IT118", "lecturer": "O Neill, Brenda" },
+    { "day": "Tue", "start": "10:15", "end": "11:15", "moduleCode": "COMP-0185", "title": "Database Fundamentals", "type": "P - OnCampus", "room": "IT221", "lecturer": "Kealy, Anita" },
+    { "day": "Tue", "start": "11:15", "end": "12:15", "moduleCode": "COMP-0185", "title": "Database Fundamentals", "type": "P - OnCampus", "room": "IT221", "lecturer": "Kealy, Anita" },
+    { "day": "Tue", "start": "13:15", "end": "14:15", "moduleCode": "MATH-0029", "title": "Mathematics for Graphics", "type": "L - OnCampus", "room": "TL159", "lecturer": "Leonard, Francis" },
+    { "day": "Tue", "start": "14:15", "end": "15:15", "moduleCode": "MATH-0029", "title": "Mathematics for Graphics", "type": "P - OnCampus", "room": "IT101", "lecturer": "Leonard, Francis" },
+    { "day": "Tue", "start": "16:15", "end": "17:15", "moduleCode": "COMP-0594", "title": "Website Development 2", "type": "L - OnCampus", "room": "C26", "lecturer": "O Halloran, Deirdre" },
+    { "day": "Wed", "start": "10:15", "end": "11:15", "moduleCode": "MATH-0029", "title": "Mathematics for Graphics", "type": "T - OnCampus", "room": "FTG11", "lecturer": "Leonard, Francis" },
+    { "day": "Wed", "start": "11:15", "end": "12:15", "moduleCode": "MATH-0029", "title": "Mathematics for Graphics", "type": "L - OnCampus", "room": "FTG11", "lecturer": "Leonard, Francis" },
+    { "day": "Wed", "start": "13:15", "end": "14:15", "moduleCode": "COMP-0591", "title": "2D Animation", "type": "P - OnCampus", "room": "IT101", "lecturer": "Mc Inerney, Patrick T." },
+    { "day": "Wed", "start": "14:15", "end": "15:15", "moduleCode": "COMP-0591", "title": "2D Animation", "type": "P - OnCampus", "room": "IT101", "lecturer": "Mc Inerney, Patrick T." },
+    { "day": "Wed", "start": "15:15", "end": "16:15", "moduleCode": "COMP-0594", "title": "Website Development 2", "type": "P - OnCampus", "room": "IT220", "lecturer": "O Halloran, Deirdre" },
+    { "day": "Wed", "start": "16:15", "end": "17:15", "moduleCode": "COMP-0594", "title": "Website Development 2", "type": "P - OnCampus", "room": "IT220", "lecturer": "O Halloran, Deirdre" },
+    { "day": "Thu", "start": "09:15", "end": "10:15", "moduleCode": "COMP-0185", "title": "Database Fundamentals", "type": "L - OnCampus", "room": "C26", "lecturer": "Kealy, Anita" },
+    { "day": "Thu", "start": "11:15", "end": "12:15", "moduleCode": "MATH-0029", "title": "Mathematics for Graphics", "type": "L - OnCampus", "room": "W13", "lecturer": "Leonard, Francis" },
+    { "day": "Thu", "start": "13:15", "end": "14:15", "moduleCode": "COMP-0185", "title": "Database Fundamentals", "type": "L - OnCampus", "room": "F27", "lecturer": "Kealy, Anita" },
+    { "day": "Thu", "start": "14:15", "end": "15:15", "moduleCode": "COMP-0593", "title": "Graphic Design 2", "type": "L - OnCampus", "room": "W14", "lecturer": "O Neill, Brenda" },
+    { "day": "Thu", "start": "15:15", "end": "16:15", "moduleCode": "COMP-0592", "title": "Digital Audio Production", "type": "P - OnCampus", "room": "IT102", "lecturer": "Windle, Peter" },
+    { "day": "Thu", "start": "16:15", "end": "17:15", "moduleCode": "COMP-0592", "title": "Digital Audio Production", "type": "P - OnCampus", "room": "IT102", "lecturer": "Windle, Peter" },
+    { "day": "Fri", "start": "09:15", "end": "10:15", "moduleCode": "COMP-0594", "title": "Website Development 2", "type": "L - OnCampus", "room": "E04", "lecturer": "O Halloran, Deirdre" },
+    { "day": "Fri", "start": "11:15", "end": "12:15", "moduleCode": "COMP-0594", "title": "Website Development 2", "type": "P - OnCampus", "room": "IT220", "lecturer": "O Halloran, Deirdre" },
+    { "day": "Fri", "start": "13:15", "end": "14:15", "moduleCode": "COMP-0185", "title": "Database Fundamentals", "type": "L - OnCampus", "room": "FTG22", "lecturer": "Kealy, Anita" },
+    { "day": "Fri", "start": "14:15", "end": "15:15", "moduleCode": "COMP-0591", "title": "2D Animation", "type": "P - OnCampus", "room": "IT101", "lecturer": "Mc Inerney, Patrick T." },
+    { "day": "Fri", "start": "15:15", "end": "16:15", "moduleCode": "COMP-0591", "title": "2D Animation", "type": "P - OnCampus", "room": "IT101", "lecturer": "Mc Inerney, Patrick T." }
+  ]
+}
+
