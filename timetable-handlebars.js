@@ -199,7 +199,7 @@ function deleteRow(index) {
 // Loads the schedule data from JSON and displays it in the table
 async function load() {
   try {
-    const response = await fetch('scheduledata.json');
+    const response = await fetch('timetable_store.json');
     scheduleData = await response.json();
     
     // Display metadata
